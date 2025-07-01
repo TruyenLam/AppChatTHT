@@ -206,10 +206,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 ?? f['url']?.toString().split('/').last
                 ?? 'file';
             String fileUrl = f['url'].toString();
-            links.add('- [${fileName}](${fileUrl})');
+
+            // ✅ Encode url để tránh lỗi khi có space/ký tự đặc biệt
+            String encodedUrl = Uri.encodeFull(fileUrl);
+            links.add('- [${fileName}](${encodedUrl})');
           } else if (f is String && (f.startsWith('http') || f.contains('/'))) {
             String fileName = f.split('/').last;
-            links.add('- [$fileName]($f)');
+            String encodedUrl = Uri.encodeFull(f);
+            links.add('- [$fileName]($encodedUrl)');
           }
         }
         if (links.isNotEmpty) {
